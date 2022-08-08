@@ -39,9 +39,9 @@ struct Node *insertNth(Node **cll, int skipCount, int newElem)
     size += 1;
     if (skipCount == 0 || skipCount % (size - 1) == 0)
     {
+        *cll = new_node;
         new_node->next = *cll;
         (*cll + (size - 1))->next = new_node;
-        *cll = new_node;
 
         return *cll;
     }
