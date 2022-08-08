@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include<stdlib.h>
+#include <string.h>
 
 int main(int argc, char **argv) {
 
@@ -18,7 +19,7 @@ int main(int argc, char **argv) {
   {
     while ((current_symbol = fgetc(f)) != EOF) 
     {
-        printf("%x", current_symbol);
+        printf("%x ", current_symbol);
     }
     putchar('\n');
   }
@@ -28,7 +29,7 @@ int main(int argc, char **argv) {
     {
         for(int bit = sizeof(current_symbol)*8-1; bit >= 0; bit --)
         {
-            printf("%d",!!(current_symbol & (1 << bit)));
+            printf("%d ",!!(current_symbol & (1 << bit)));
         }
     }
     putchar('\n');
