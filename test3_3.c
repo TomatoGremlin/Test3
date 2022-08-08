@@ -3,6 +3,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include<math.h>
+
 typedef struct Product {
     double new_price;
     double old_price;
@@ -38,8 +39,8 @@ void random_product(Product *p) {
 }
 
 void print_product(Product *p) {
-    printf("Id:%d, Old price: %lf, New price:%lf, Type: %c, Name:%s\n",
-         p->id, p->old_price, p->new_price, p->product_type, p->product_name);
+    printf("Difference: %.2lf, Id:%d, Old price: %.2lf, New price:%.2lf, Type: %c, Name: %s\n",
+       fabs(p->old_price - p->new_price),  p->id, p->old_price, p->new_price, p->product_type, p->product_name);
 }
 
 int compare_products(const void *p1, const void *p2) {
@@ -65,6 +66,7 @@ int compare_products(const void *p1, const void *p2) {
 }
 
 int main() {
+   // printf("%ld", sizeof(Product));
    
     Product *product_list;
     product_list = malloc(40*sizeof(Product));
@@ -72,6 +74,7 @@ int main() {
         perror("Malloc failed\n");
         return -1;
     }
+
 
     srand(time(NULL));
 
