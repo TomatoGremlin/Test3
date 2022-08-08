@@ -65,8 +65,7 @@ int compare_products(const void *p1, const void *p2) {
 }
 
 int main() {
-    printf("%ld", sizeof(Product));
-   /*
+   
     Product *product_list;
     product_list = malloc(40*sizeof(Product));
     if(!product_list) {
@@ -86,5 +85,5 @@ int main() {
         print_product(product_list + i);
     }
     free(product_list);
-    */
+    
 }
