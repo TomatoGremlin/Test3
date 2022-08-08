@@ -1,6 +1,18 @@
 #include <stdio.h>
-#include<stdlib.h>
 #include <string.h>
+
+void binary(int n){
+
+    int j, k, mask;
+    for (int i = 7; i >= 0; i--)
+    {
+        j=i;
+        mask= 1 << j;
+        k = n & mask;
+        k == 0?printf("0"):printf("1");
+    }
+    putchar(' ');  
+}
 
 int main(int argc, char **argv) {
 
@@ -8,6 +20,7 @@ int main(int argc, char **argv) {
    //print_mode = argv[2]
 
   FILE* f = fopen (argv[1], "r");
+
   int current_symbol; 
   if (f == NULL)
   {
@@ -27,13 +40,12 @@ int main(int argc, char **argv) {
   {
     while ((current_symbol = fgetc(f)) != EOF) 
     {
-        for(int bit = sizeof(current_symbol)*8-1; bit >= 0; bit --)
-        {
-            printf("%d ",!!(current_symbol & (1 << bit)));
-        }
+        binary(current_symbol);
     }
     putchar('\n');
   }
+  
+    fclose(f);
 
     return 0;
 }
