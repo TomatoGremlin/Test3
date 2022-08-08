@@ -1,110 +1,104 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-typedef struct Node {
-    //  stores element of type int
+typedef struct Node
+{
     int data;
-    // pointer to next element after current Node
+   
     struct Node *next;
 } Node;
 
-void print(Node *cll) { // pointer to first element
-  
-    Node *curNode = cll;
-   
-    while(curNode) {
-        printf("addr: %p,  data: %ld,   next: %p\n",
-            curNode, curNode->data, curNode->next);
-       
-        curNode = curNode->next;
-    }
-}
+int size;
 
-struct Node*  insertNth(Node** cll,  int skipCount, int newElem){
-    Node* node = create_node(newElem);
-    if (skipCount == 0 || *cll == NULL){
-        //node->next = *cll;
-        *cll = node;
-        return;
-    }
-    Node* current = *cll;
-    Node* prev = current;
-    // n steps
-    while (current != NULL && skipCount--){
-        prev = current;
-        current = current->next;
-    }
-    prev->next = node;
-    node->next = current;
-
-    return node;
-}
-
-void push_back(Node *head, long new_data) {
+void print(Node *cll)
+{ 
     
+    Node *current_node = cll;
+    for (int i = 0; i < size; i++)
+    {
+        printf("Address: %p,  Data: %d, Next node address: %p\n",
+               current_node, current_node->data, current_node->next);
+      
+        current_node = current_node->next;
+    }
+}
+
+struct Node *insertNth(Node **cll, int skipCount, int newElem)
+{
+   
     Node *new_node = malloc(sizeof(Node));
-    if(!new_node) {
-        perror("Push_back: Could not malloc\n");
-        exit(-1);
+    new_node->data = newElem;
+    new_node->next = NULL;
+
+    if (*cll == NULL)
+    {
+        *cll = new_node;
+        size = 1;
+        return *cll;
     }
- 
-    new_node -> data = new_data;
-    
-    new_node -> next = NULL;
- 
+    size += 1;
+    if (skipCount == 0 || skipCount % (size - 1) == 0)
+    {
+        new_node->next = *cll;
+        (*cll + (size - 1))->next = new_node;
+        *cll = new_node;
+
+        return *cll;
+    }
    
-    Node *last_node = head;
-    
-    while(last_node->next != NULL) {
-        last_node = last_node->next;
+    Node *before_new = *cll; 
+    Node *after_new = before_new;
+
+   
+    while (skipCount--)
+    {
+        before_new = after_new;
+        after_new = after_new->next;
     }
- 
-    last_node -> next = new_node;
+    before_new->next = new_node;
+    new_node->next = after_new;
+
+    return new_node;
 }
 
-
-void pop_front(Node **head_pp) {
-
-    Node *deleted_node = *head_pp;
- 
-    *head_pp = (*head_pp)->next;
- 
-    free(deleted_node);
-}
-
-
-Node *cll1;
-int main() {
+int main()
+{
     unsigned n;
     int numbers;
-    scanf("%u", n);
-    
-
-    Node *a = malloc(sizeof(Node)),
-         *b = malloc(sizeof(Node)),
-         *c = malloc(sizeof(Node)),
-         *d = malloc(sizeof(Node));
-    a->data = 5;
-    a->next = b;
-    cll1 = a;
-    b->data = 8;
-    b->next = c;
-    c->data = 3;
-    c->next = d;
-    d->data = 12;
-
-    for (size_t i = 0; i < n; i++)
+    scanf("%u", &n);
+    if (n < 0)
     {
-       scanf("%d ", numbers);
-        
-       push_back(cll1, numbers);
+        perror("Error. Number should be bigger than 0.");
+        return -1;
     }
-    
-    print_ll(cll1);
+    size = n;
+
+    Node *node_list;
+    node_list = malloc(sizeof(Node) * n);
+
+    for (int i = 0; i < n; i++)
+    {
+        scanf("%d", &numbers);
+        (node_list + i)->data = numbers;
+        if (i == n - 1)
+        {
+            (node_list + i)->next = node_list;
+            break;
+        }
+        (node_list + i)->next = (node_list + i + 1);
+    }
+ 
+    print(node_list);
     printf("\n");
+    Node **pointer_to_nodelist = &node_list;
 
-    pop_front(&cll1);
-    print_ll(cll1);
+    int insert_number = 77;
+    int position_afterFirst = 5;
+    insertNth(pointer_to_nodelist, position_afterFirst, insert_number);
 
+    printf("After inserting %d on position %d:\n", insert_number, (position_afterFirst + 1) % (size - 1));
+    print(node_list);
+
+    free(node_list);
     return 0;
 }
